@@ -1,0 +1,322 @@
+ {
+ 	"blocks" : [	
+		{
+			"name" : "class1-1",
+			"arrangement" : "simple"
+		},
+		{
+			"name" : "class1-2",
+			"arrangement" : "simple"
+		},
+		{
+			"name" : "class1-3",
+			"arrangement" : "simple"
+		}
+		{
+			"name" : "class1-4",
+			"arrangement" : "simple"
+		}
+		{
+			"name" : "class1-5",
+			"arrangement" : "simple"
+		}
+		{
+			"name" : "class1-6",
+			"arrangement" : "simple"
+		}
+		{
+			"name" : "class1-7",
+			"arrangement" : "simple"
+		}
+		{
+			"name" : "class1-8",
+			"arrangement" : "simple"
+		}
+		{
+			"name" : "class1-9",
+			"arrangement" : "simple"
+		}
+		{
+			"name" : "teacher",
+			"arrangement" : "simple"
+		}
+    ],
+    "buildings" : [
+ 		{
+ 			"block" : "class1-1", 
+ 			"name" : "kitagawa norihito",
+ 			"width" : 42,
+ 			"height" : 155
+ 		},
+ 		{
+ 			"block" : "teacher",
+ 			"name" : "hata hideaki",
+ 			"width" : 70,
+ 			"height" : 180
+ 		},
+ 		{
+ 			"block" : "class1-2", 
+ 			"name" : "fujino keisuke",
+ 			"width" : 40,
+ 			"height" : 150
+ 		},
+ 		{
+ 			"block" : "class1-1",
+ 			"name" : "wakamoto ryoki",
+ 			"width" : 38,
+ 			"height" : 152
+ 		},
+ 		{
+ 			"block" : "class1-2", 
+ 			"name" : "kawai hiroki",
+ 			"width" : 35,
+ 			"height" : 145
+ 		},
+ 		{
+ 			"block" : "class1-1",
+ 			"name" : "fujiwara shin",
+ 			"width" : 50,
+ 			"height" : 162
+ 		},
+ 		{
+ 			"block" : "class1-2", 
+ 			"name" : "ohashi ryota",
+ 			"width" : 15,
+ 			"height" : 70
+ 		},
+ 		{
+ 			"block" : "teacher",
+ 			"name" : "monden akito",
+ 			"width" : 75,
+ 			"height" : 170
+ 		},
+ 		{
+ 			"block" : "teacher",
+ 			"name" : "ihara akinori",
+ 			"width" : 68,
+ 			"height" : 172
+ 		},
+ 		{
+ 			"block" : "teacher", 
+ 			"name" : "matsumoto kenichi",
+ 			"width" : 80,
+ 			"height" : 175
+ 		},
+ 		{
+ 			"block" : "class1-1",
+ 			"name" : "a1",
+ 			"width" : 50,
+ 			"height" : 150
+ 		},
+ 		{
+ 			"block" : "class1-1", 
+ 			"name" : "b1",
+ 			"width" : 35,
+ 			"height" : 135
+ 		},
+ 		{
+ 			"block" : "class1-1",
+ 			"name" : "c1",
+ 			"width" : 40,
+ 			"height" : 145
+ 		},
+ 		{
+ 			"block" : "class1-1",
+ 			"name" : "d1",
+ 			"width" : 50,
+ 			"height" : 152
+ 		},
+ 		{
+ 			"block" : "class1-2", 
+ 			"name" : "a2",
+ 			"width" : 32,
+ 			"height" : 129
+ 		},
+		{
+ 			"block" : "class1-2",
+ 			"name" : "b2",
+ 			"width" : 55,
+ 			"height" : 155
+ 		},
+ 		{
+ 			"block" : "class1-2",
+ 			"name" : "c2",
+ 			"width" : 40,
+ 			"height" : 142
+ 		},
+ 		{
+ 			"block" : "class1-2", 
+ 			"name" : "d2",
+ 			"width" : 55,
+ 			"height" : 160
+ 		},
+ 		{
+ 			"block" : "class1-2",
+ 			"name" : "e2",
+ 			"width" : 35,
+ 			"height" : 130
+ 		},
+ 		{
+ 			"block" : "class1-2",
+ 			"name" : "f2",
+ 			"width" : 43,
+ 			"height" : 147
+ 		},
+ 		{
+ 			"block" : "class1-2", 
+ 			"name" : "g2",
+ 			"width" : 34,
+ 			"height" : 141
+ 		}
+		{
+ 			"block" : "class1-2", 
+ 			"name" : "h2",
+ 			"width" : 60,
+ 			"height" : 152
+ 		},
+ 		{
+ 			"block" : "class1-2",
+ 			"name" : "i2",
+ 			"width" : 46,
+ 			"height" : 157
+ 		},
+ 		{
+ 			"block" : "class1-3",
+ 			"name" : "a3",
+ 			"width" : 38,
+ 			"height" : 139
+ 		},
+ 		{
+ 			"block" : "class1-3", 
+ 			"name" : "b3",
+ 			"width" : 46,
+ 			"height" : 151
+ 		}
+ 		{
+ 			"block" : "class1-1", 
+ 			"name" : "e1",
+ 			"width" : 56,
+ 			"height" : 166
+ 		},
+ 		{
+ 			"block" : "class1-1",
+ 			"name" : "f1",
+ 			"width" : 29,
+ 			"height" : 128
+ 		},
+ 		{
+ 			"block" : "class1-1", 
+ 			"name" : "g1",
+ 			"width" : 35,
+ 			"height" : 143
+ 		},
+ 		{
+ 			"block" : "class1-1",
+ 			"name" : "h1",
+ 			"width" : 50,
+ 			"height" : 164
+ 		},
+ 		{
+ 			"block" : "class1-1", 
+ 			"name" : "i1",
+ 			"width" : 39,
+ 			"height" : 134
+ 		},
+ 		{
+ 			"block" : "class1-2",
+ 			"name" : "j2",
+ 			"width" : 44,
+ 			"height" : 137
+ 		},
+ 		{
+ 			"block" : "class1-2", 
+ 			"name" : "k2",
+ 			"width" : 24,
+ 			"height" : 119
+ 		},
+ 		{
+ 			"block" : "class1-2",
+ 			"name" : "l2",
+ 			"width" : 56,
+ 			"height" : 152
+ 		},
+ 		{
+ 			"block" : "class1-2",
+ 			"name" : "m1",
+ 			"width" : 60,
+ 			"height" : 149
+ 		},
+ 		{
+ 			"block" : "class1-2", 
+ 			"name" : "n1",
+ 			"width" : 57,
+ 			"height" : 153
+ 		},
+ 		{
+ 			"block" : "class1-1",
+ 			"name" : "j1",
+ 			"width" : 43,
+ 			"height" : 152
+ 		},
+ 		{
+ 			"block" : "class1-1", 
+ 			"name" : "k1",
+ 			"width" : 46,
+ 			"height" : 150
+ 		},
+ 		{
+ 			"block" : "class1-1",
+ 			"name" : "l1",
+ 			"width" : 39,
+ 			"height" : 146
+ 		},
+ 		{
+ 			"block" : "class1-2", 
+ 			"name" : "o2",
+ 			"width" : 63,
+ 			"height" : 156
+ 		},
+ 		{
+ 			"block" : "class1-1",
+ 			"name" : "m1",
+ 			"width" : 37,
+ 			"height" : 141
+ 		},
+ 		{
+ 			"block" : "class1-2",
+ 			"name" : "n1",
+ 			"width" : 45,
+ 			"height" : 147
+ 		},
+ 		{
+ 			"block" : "class1-3", 
+ 			"name" : "c3",
+ 			"width" : 31,
+ 			"height" : 136
+ 		},
+		{
+ 			"block" : "teacher",
+ 			"name" : "a-t",
+ 			"width" : 68,
+ 			"height" : 177
+ 		},
+ 		{
+ 			"block" : "teacher",
+ 			"name" : "b-t",
+ 			"width" : 56,
+ 			"height" : 164
+ 		},
+ 		{
+ 			"block" : "teacher", 
+ 			"name" : "c-t",
+ 			"width" : 92,
+ 			"height" : 171
+ 		},
+ 		{
+ 			"block" : "class1-1",
+ 			"name" : "o-1",
+ 			"width" : 64,
+ 			"height" : 155
+ 		}
+ 	]
+}
