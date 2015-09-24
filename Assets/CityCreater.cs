@@ -57,9 +57,9 @@ public class CityCreater : MonoBehaviour
 		{ 
 				//TARGET = Application.dataPath + "/target/redmine_path.json";
 				TARGET = Application.dataPath + "/target/test.json";
-				ReadFile ();
-				CreateCity ();
-		} 
+				StartCoroutine(ReadFile());
+		}
+
 
 	 	
 
@@ -780,16 +780,19 @@ public class CityCreater : MonoBehaviour
 				}
 		}
 
-		void ReadFile () 
+		IEnumerator ReadFile ()
 		{
-				FileInfo file = new FileInfo (TARGET);
-				try {
-						using (StreamReader sr = new StreamReader(file.OpenRead (),Encoding.UTF8)) {
-								jsonText = sr.ReadToEnd ();
-						}
-				} catch (Exception e) {
-						jsonText += SetDefaultText ();
-				}
+			string url = "http://kataribe-dev.naist.jp:8484/public/codecity.json";
+			WWW www = new WWW(url);
+			yield return www;
+
+			if (www.error == null) {
+				jsonText = www.text;
+			} else {
+				jsonText = SetDefaultText();
+			}
+
+			CreateCity();
 		}
 
 		string SetDefaultText ()
