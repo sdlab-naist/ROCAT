@@ -77,14 +77,14 @@ public class CameraMove : MonoBehaviour {
 
 //		this.transform.Translate ( 0, 0,( Input.GetAxis ( "Vertical" ) * 1 ) );
 //		this.transform.Rotate (0,( Input.GetAxis ("Horizontal" )  * 1 ),0);
-	} 
-	void OnGUI()
-	{
-		if(view_src)
-			//src_txt = GUI.TextArea (new Rect (5, 5, Screen.width-10, Screen.height-100), src_txt);
-			src_txt = GUI.TextArea (new Rect (5, 5, Screen.width-10, Screen.height-100), src_txt.Substring(0,Math.Min(1000,src_txt.Length)));
-
 	}
+	// void OnGUI()
+	// {
+	// 	if(view_src)
+	// 		//src_txt = GUI.TextArea (new Rect (5, 5, Screen.width-10, Screen.height-100), src_txt);
+	// 		src_txt = GUI.TextArea (new Rect (5, 5, Screen.width-10, Screen.height-100), src_txt.Substring(0,Math.Min(1000,src_txt.Length)));
+
+	// }
 	/*
 	void OnGUI () {
 		// ラベルを表示する
@@ -100,18 +100,18 @@ public class CameraMove : MonoBehaviour {
 	}
 	string ReadFile(string path){
 		// FileReadTest.txtファイルを読み込む
-		Debug.Log (path);
-		FileInfo fi = new FileInfo(path);
+		// Debug.Log (path);
+		// FileInfo fi = new FileInfo(path);
 		string st = "";
-		try {
-			// 一行毎読み込み
-			using (StreamReader sr = new StreamReader(fi.OpenRead(), Encoding.UTF8)){
-				st = sr.ReadToEnd();
-			}
-		} catch (Exception e){
-			// 改行コード
-			st += SetDefaultText();
-		}
+		// try {
+		// 	// 一行毎読み込み
+		// 	using (StreamReader sr = new StreamReader(fi.OpenRead(), Encoding.UTF8)){
+		// 		st = sr.ReadToEnd();
+		// 	}
+		// } catch (Exception e){
+		// 	// 改行コード
+		// 	st += SetDefaultText();
+		// }
 
 		return st;
 	}
