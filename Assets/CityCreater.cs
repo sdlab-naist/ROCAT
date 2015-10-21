@@ -55,13 +55,12 @@ public class CityCreater : MonoBehaviour
 		// Use this for initialization
 		void Start ()
 		{
-				//TARGET = Application.dataPath + "/target/redmine_path.json";
-				TARGET = Application.dataPath + "/target/test.json";
-				StartCoroutine(ReadFile());
+#if UNITY_EDITOR
+			StartCityCreater("2");
+#else
+			Application.ExternalCall("OnUnityReady");
+#endif
 		}
-
-
-
 
 		void CreateCity ()
 		{
@@ -780,9 +779,14 @@ public class CityCreater : MonoBehaviour
 				}
 		}
 
-		IEnumerator ReadFile ()
+		public void StartCityCreater(string id)
 		{
-			string url = "http://kataribe-dev.naist.jp:8484/public/codecity.json";
+			StartCoroutine(ReadFile(id));
+		}
+
+		IEnumerator ReadFile (string id)
+		{
+			string url = "http://kataribe-dev.naist.jp:8484/public/code_city.json?id=" + id;
 			WWW www = new WWW(url);
 			yield return www;
 
