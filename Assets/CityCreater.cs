@@ -68,11 +68,197 @@ public class CityCreater : MonoBehaviour
 				this.city = Json.Deserialize (jsonText) as Dictionary<string,object>;
 				var blocks = this.city ["blocks"] as IList;
 				var buildings = this.city ["buildings"] as IList;
-				nori_rogic_ver2 (blocks, buildings);
+				LocateBlockAndBuilding(blocks, buildings);
+				//nori_rogic_ver2 (blocks, buildings);
 			/*
 			Simple (blocks, buildings);
 			 */
 		}
+
+	/**
+	 * English
+	 * 
+	 * Japanese(Romaji)
+	 * Block to Building no ichi wo kimeru kansu.
+	 *
+	 */
+	void LocateBlockAndBuilding (IList blocks, IList buildings)
+	{
+		Dictionary<String,List<Dictionary<String, object>>> arrangedBlock = ArrangeByKey (buildings, "block"); // block gotoni building wo matomeru
+		Dictionary<String,List<Dictionary<String, object>>> blockDictionary = ArrangeByKey (blocks, "name"); // name gotoni block wo matomeru
+
+		List<Dictionary<String, object>> blockList = new List<Dictionary<string, object>> ();
+		//Debug.Log (new HashSet<String>(arrangedBlock.Keys).Equals(new HashSet<String>(blockDictionary.Keys)));
+
+		foreach (String key in blockDictionary.Keys) { // block no key gotoni yaru
+
+			SetLocation (arrangedBlock[key]); // mazu building no zahyo wo kimeru
+			SetWidth (arrangedBlock[key], blockDictionary[key]); // tsugini block no width wo kimeru
+			blockList.Add(blockDictionary[key][0]);
+			Debug.Log(int.Parse(blockDictionary[key][0]["width"].ToString()));
+
+		}
+		Debug.Log("#####");
+		SetLocation (blockList);
+
+		Debug.Log("TEST");
+		SetGlobalLocation (arrangedBlock, blockDictionary);
+		Debug.Log("TEST");
+		BuildBuildings (arrangedBlock, blockDictionary);
+	}
+
+	/**
+	 * English
+	 * 
+	 * Japanese(Romaji)
+	 * key no atai gotoni target wo matomeru kansu.
+	 * building wo zokusuru block gotoni matometari
+	 * block wo name gotoni matometari suru
+	 *
+	 */
+	Dictionary<String,List<Dictionary<String, object>>> ArrangeByKey (IList target, String key)
+	{
+		Dictionary<String,List<Dictionary<String, object>>> arrangedTarget = new Dictionary<string, List<Dictionary<String, object>>>();
+
+		foreach (Dictionary<string,object> contents in target) {
+			String contentsName = contents[key].ToString();
+			if(arrangedTarget.ContainsKey(contentsName))
+			{
+				// sudeni sonzai surunara add suru
+				arrangedTarget[contentsName].Add(contents);
+			}
+			else
+			{
+				// hajimete detanara new sitekara add suru
+				arrangedTarget[contentsName] = new List<Dictionary<String, object>>();
+				arrangedTarget[contentsName].Add(contents);
+			}
+		}
+		return arrangedTarget;
+	}
+
+	/**
+	 * English
+	 * 
+	 * Japanese(Romaji)
+	 * target no soutai zahyo wo kimeru kansu.
+	 * building no zahyo ya
+	 * block no zahyo wo kimeru
+	 * 
+	 */
+
+
+	void SetLocation (List<Dictionary<String,object>> target)
+	{
+		// mazu target wo sort suru
+		//Debug.Log (target [0] ["width"]);
+		target.Sort((b,a) => int.Parse(a["width"].ToString()) - int.Parse(b["width"].ToString()));
+
+
+		// 0 3 8
+		// 1 2 7
+		// 4 5 6
+		// 
+		// ue mitaini building ya block wo haichi suru
+
+		int count = 0;
+		float space = float.Parse(target[0]["width"].ToString()) + 20; // kijun to naru kankaku
+		for (int i = 0; ;i++) {
+			int constX = 0;
+			int y = i;
+			// mazu migi ni mukatte haichi suru
+			// ex) 1
+			// ex) 4 to 5
+			for(int x = 0; x <= y; x++){
+				target[count]["x"] = (space * x) + (space / 2);
+				target[count]["y"] = (space * y) + (space / 2);
+				count++;
+				if(count == target.Count)
+				{
+					goto Finish; // zenbu owattara tobu
+				}
+				constX = x;
+			}
+			// tsugi ni ue ni mukatte haichi suru
+			// ex) 0
+			// ex) 2 to 3
+			// ex) 6 to 8
+			for(y--; y >= 0; y--){
+				target[count]["x"] = (space * constX) + (space / 2);
+				target[count]["y"] = (space * y) + (space / 2);
+				count++;
+				if(count == target.Count)
+				{
+					goto Finish; // zenbu owattara tobu
+				}
+			}
+		}
+
+	Finish:
+			return;
+	}
+
+
+	/**
+	 * English
+	 * 
+	 * Japanese(Romaji)
+	 * block no width wo kimeru kansu.
+	 * target no 0 banme no building no width + 20 wo
+	 * target no heihoukon wo kiriageta seisu bai suru 
+	 * 
+	 */
+	void SetWidth (List<Dictionary<String,object>> target, List<Dictionary<String, object>> block)
+	{
+		float space = float.Parse(target[0]["width"].ToString()) + 20;
+		for (int i = 0; ; i++) {
+			if(i * i > target.Count)
+			{
+				block[0]["width"] = space * i;
+				break;
+			}
+		}
+	}
+
+
+	void SetGlobalLocation(Dictionary<String,List<Dictionary<String, object>>> building, Dictionary<String,List<Dictionary<String, object>>> block)
+	{
+		foreach (String key in building.Keys) {
+			float blockX = float.Parse(block[key][0]["x"].ToString()) - float.Parse(block[key][0]["width"].ToString()) / 2;
+			float blockY = float.Parse(block[key][0]["y"].ToString()) - float.Parse(block[key][0]["width"].ToString()) / 2;
+
+			List<Dictionary<String, object>> buildingList = building[key];
+			foreach(Dictionary<String, object> oneBuilding in buildingList){
+				oneBuilding["globalX"] = float.Parse(blockX.ToString()) + float.Parse(oneBuilding["x"].ToString());
+				oneBuilding["globalY"] = float.Parse(blockY.ToString()) + float.Parse(oneBuilding["y"].ToString());
+			}
+		}
+	}
+
+	void BuildBuildings(Dictionary<String,List<Dictionary<String, object>>> building, Dictionary<String,List<Dictionary<String, object>>> block){
+		Debug.Log("TEST");
+		foreach (String key in building.Keys) {
+			List<Dictionary<String, object>> buildingList = building [key];
+			foreach (Dictionary<String, object> oneBuilding in buildingList) {
+				GameObject clone = Instantiate (this.building, new Vector3 (float.Parse (oneBuilding ["globalX"].ToString ()), (float.Parse (oneBuilding ["height"].ToString ()) / 2) + 2, float.Parse (oneBuilding ["globalY"].ToString ())), transform.rotation) as GameObject;
+				clone.name = oneBuilding ["name"].ToString ();
+				clone.transform.localScale = new Vector3 (float.Parse (oneBuilding ["width"].ToString ()), float.Parse (oneBuilding ["height"].ToString ()), float.Parse (oneBuilding ["width"].ToString ()));
+				//clone.GetComponent<Renderer>().material.color = Color.blue;
+				clone.GetComponent<Renderer> ().material.color = new Color (float.Parse (oneBuilding ["color_r"].ToString ()), float.Parse (oneBuilding ["color_g"].ToString ()), float.Parse (oneBuilding ["color_b"].ToString ()));
+			}
+		}
+		
+		Debug.Log("TEST");
+		foreach (String key in block.Keys) {
+			Debug.Log(key);
+			List<Dictionary<String, object>> blockList = block [key];
+			GameObject clone = Instantiate (this.ground, new Vector3(float.Parse(blockList[0]["x"].ToString()), 1, float.Parse(blockList[0]["y"].ToString())), transform.rotation) as GameObject;
+			clone.transform.localScale = new Vector3 (float.Parse (blockList [0]["width"].ToString ()), 2, float.Parse (blockList [0]["width"].ToString ()));
+		}
+
+	}
+
+
 
 	void nori_rogic_ver2 (IList blocks, IList buildings)
 	{
