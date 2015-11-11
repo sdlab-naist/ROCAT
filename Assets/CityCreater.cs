@@ -244,7 +244,8 @@ public class CityCreater : MonoBehaviour
 				clone.name = oneBuilding ["name"].ToString ();
 				clone.transform.localScale = new Vector3 (float.Parse (oneBuilding ["width"].ToString ()), float.Parse (oneBuilding ["height"].ToString ()), float.Parse (oneBuilding ["width"].ToString ()));
 				//clone.GetComponent<Renderer>().material.color = Color.blue;
-				clone.GetComponent<Renderer> ().material.color = new Color (float.Parse (oneBuilding ["color_r"].ToString ()), float.Parse (oneBuilding ["color_g"].ToString ()), float.Parse (oneBuilding ["color_b"].ToString ()));
+
+				clone.GetComponent<Building>().Init(new Color (float.Parse (oneBuilding ["color_r"].ToString ()), float.Parse (oneBuilding ["color_g"].ToString ()), float.Parse (oneBuilding ["color_b"].ToString ())));
 			}
 		}
 		
