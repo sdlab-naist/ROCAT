@@ -1,10 +1,15 @@
 fileFormatVersion: 2
 guid: 78cac85b781a64dbebd2c07905043d19
-timeCreated: 1428906723
-licenseType: Pro
+timeCreated: 1447226085
+licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - canvas: {instanceID: 0}
+  - file_name: {instanceID: 0}
+  - cc: {instanceID: 0}
+  - preMaterial: {instanceID: 0}
+  - viewMaterial: {fileID: 2100000, guid: 74f0387a0a057d9409709cf133bda85f, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
