@@ -1,4 +1,4 @@
-  using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -17,7 +17,7 @@ public class sort_block{
 }
 
 public class sort_building{
-	public int block_ID { get; set;} 
+	public int block_ID { get; set;}
 	public string building_name { get; set;}
 	public float width { get; set;}
 	public float height { get; set;}
@@ -45,23 +45,22 @@ public class z_hold{
 
 public class CityCreater : MonoBehaviour
 {
-		public string TARGET; 
+		public string TARGET;
 		public GameObject ground;
 		public GameObject testGround;
-		public GameObject building; 
+		public GameObject building;
 		public Dictionary<string,object> city;
 
 		public string jsonText = "";
 		// Use this for initialization
 		void Start ()
-		{ 
-				//TARGET = Application.dataPath + "/target/redmine_path.json";
-				TARGET = Application.dataPath + "/target/test.json";
-				StartCoroutine(ReadFile());
+		{
+#if UNITY_EDITOR
+			StartCityCreater("2");
+#else
+			Application.ExternalCall("OnUnityReady");
+#endif
 		}
-
-
-	 	
 
 		void CreateCity ()
 		{
@@ -103,7 +102,7 @@ public class CityCreater : MonoBehaviour
 		List<x_hold> b_x_list_temp = new List<x_hold> ();
 		List<z_hold> b_z_list = new List<z_hold> ();
 		List<z_hold> b_z_list_temp = new List<z_hold> ();
-		
+
 		int cnt = 0;
 		int b_cnt = 0;
 		int block_step_cnt = 0;
@@ -111,10 +110,10 @@ public class CityCreater : MonoBehaviour
 		float x_pos = 0;
 		float y_pos = 0;
 		float z_pos = 0;
-		
+
 		float x = 0;
 		float z = 0;
-		
+
 		float se_x = 0;
 		float se_z = 0;
 
@@ -132,7 +131,7 @@ public class CityCreater : MonoBehaviour
 			s_point_z.Add (cnt,0);
 			e_point_x.Add (cnt,0);
 			e_point_z.Add (cnt,0);
-			
+
 			x_cnt.Add (cnt,0);
 			z_cnt.Add (cnt,0);
 
@@ -142,7 +141,7 @@ public class CityCreater : MonoBehaviour
 
 		/* step.2 */
 
-		foreach (Dictionary<string,object> building in buildings) {	
+		foreach (Dictionary<string,object> building in buildings) {
 			float width = float.Parse (building ["width"].ToString ());
 			float height = float.Parse (building ["height"].ToString ());
 			string block_name = building ["block"].ToString ();
@@ -152,22 +151,22 @@ public class CityCreater : MonoBehaviour
 			float building_color_g = float.Parse (building["color_g"].ToString ());
 			float building_color_b = float.Parse (building["color_b"].ToString ());
 
-			
+
 			sorted_building_list.Add (new sort_building(){block_ID=block_ID_Dic[block_name],building_name=building_name,width=width,height=height,x_pos=width/2,y_pos=2,z_pos=width/2,color_r=building_color_r,color_g=building_color_g,color_b=building_color_b});
 		}
-		
+
 		sorted_building_list.Sort ((b,a) => (int)a.width - (int)b.width);
 
 		/* step.3 */
 
 		cnt = 0;
-		
+
 		foreach(sort_building building_pos in sorted_building_list){
 
 			/* 1 */
 
 			if(building_cnt[building_pos.block_ID]==1){
-					
+
 				/* building position */
 				building_pos.x_pos=0;
 				building_pos.z_pos=0;
@@ -180,7 +179,7 @@ public class CityCreater : MonoBehaviour
 
 				e_point_x[building_pos.block_ID]=0;
 				e_point_z[building_pos.block_ID]=0;
-				
+
 				/* building cnt 1 -> 2 */
 				building_cnt[building_pos.block_ID]++;
 				/* building step cnt 0 -> 1 */
@@ -200,7 +199,7 @@ public class CityCreater : MonoBehaviour
 
 				/* block width */
 				sorted_block_list[building_pos.block_ID].z_width += building_pos.width+10;
-				
+
 				e_point_z[building_pos.block_ID]+=(building_pos.width+10)/2;
 
 				z_list.Add (new z_hold(){block_ID=building_pos.block_ID,building_step_cnt=building_step_cnt[building_pos.block_ID],z=building_pos.z_pos,width=building_pos.width});
@@ -285,7 +284,7 @@ public class CityCreater : MonoBehaviour
 			else{
 				Debug.Log("aho");
 			}
-			
+
 			sorted_building_list[cnt].x_pos=building_pos.x_pos;
 			sorted_building_list[cnt].z_pos=building_pos.z_pos;
 
@@ -295,19 +294,19 @@ public class CityCreater : MonoBehaviour
 		/* step.4 */
 
 		sorted_block_list.Sort ((b,a) => (int)a.z_width - (int)b.z_width);
-			
+
 		cnt = 0;
 
 		Debug.Log(sorted_block_list[0].block_ID);
-		
+
 		foreach(sort_block block_pos in sorted_block_list){
 			Debug.Log(block_pos.block_ID);
 			Debug.Log(block_pos.z_width);
 
 			/* 1 */
-			
+
 			if(block_cnt[0]==1){
-				
+
 				/* building position */
 				block_pos.x_pos=0;
 				block_pos.z_pos=0;
@@ -321,32 +320,32 @@ public class CityCreater : MonoBehaviour
 				/* building step cnt 0 -> 1 */
 				b_cnt++;
 			}
-			
+
 			/* 5 */
-			
+
 			else if(block_cnt[0]==Math.Pow(b_cnt,2)+1){
-				
+
 				b_x_list_temp=b_x_list.FindAll(e => e.building_step_cnt == 0);
 				b_z_list_temp=b_z_list.FindAll(f => f.building_step_cnt == b_cnt-1);
-				
+
 				/* building position */
 				block_pos.x_pos=b_x_list_temp[0].x;
 				block_pos.z_pos=b_z_list_temp[0].z+(b_x_list_temp[0].width/2)+10+(block_pos.z_width/2);
-				
+
 				b_z_list.Add (new z_hold(){block_ID=0,building_step_cnt=b_cnt,z=block_pos.z_pos,width=block_pos.z_width});
-				
+
 				b_x_list_temp.RemoveAll(e => e.building_step_cnt == 0);
 				b_z_list_temp.RemoveAll(f => f.building_step_cnt == b_cnt-1);
-				
+
 				block_cnt[0]++;
 			}
-			
+
 			/* 6 */
-			
+
 			else if(block_cnt[0]>Math.Pow(b_cnt,2)+1 && block_cnt[0]<Math.Pow(b_cnt,2)+b_cnt+1){
 				b_x_list_temp=b_x_list.FindAll(e => e.building_step_cnt == b_cnt-(Math.Pow(b_cnt,2)+b_cnt+1-block_cnt[0]));
 				b_z_list_temp=b_z_list.FindAll(f => f.building_step_cnt == b_cnt);
-				
+
 				block_pos.x_pos=b_x_list_temp[0].x;
 				block_pos.z_pos=b_z_list_temp[0].z;
 
@@ -355,63 +354,63 @@ public class CityCreater : MonoBehaviour
 
 				block_cnt[0]++;
 			}
-			
+
 			/* 7 */
-			
+
 			else if(block_cnt[0]==Math.Pow(b_cnt,2)+b_cnt+1){
 				b_x_list_temp=b_x_list.FindAll(e => e.building_step_cnt == b_cnt-1);
 				b_z_list_temp=b_z_list.FindAll(f => f.building_step_cnt == b_cnt);
-				
+
 				block_pos.x_pos=b_x_list_temp[0].x+(b_z_list_temp[0].width/2)+10+(block_pos.z_width/2);
 				block_pos.z_pos=b_z_list_temp[0].z;
-				
+
 				b_x_list.Add (new x_hold(){block_ID=0,building_step_cnt=b_cnt,x=block_pos.x_pos,width=block_pos.z_width});
-				
+
 				b_x_list_temp.RemoveAll(e => e.building_step_cnt == b_cnt-1);
 				b_z_list_temp.RemoveAll(f => f.building_step_cnt == b_cnt);
-				
+
 				block_cnt[0]++;
 			}
-			
+
 			/* 8 */
-			
+
 			else if(block_cnt[0]>Math.Pow(b_cnt,2)+b_cnt+1 && block_cnt[0]<Math.Pow(b_cnt+1,2)){
 				b_x_list_temp=b_x_list.FindAll(e => e.building_step_cnt == b_cnt);
 				b_z_list_temp=b_z_list.FindAll(f => f.building_step_cnt == b_cnt-(block_cnt[0]-(Math.Pow(b_cnt,2)+b_cnt+1)));
-				
+
 				block_pos.x_pos=b_x_list_temp[0].x;
 				block_pos.z_pos=b_z_list_temp[0].z;
-				
+
 				b_x_list_temp.RemoveAll(e => e.building_step_cnt == b_cnt);
 				b_z_list_temp.RemoveAll(f => f.building_step_cnt == b_cnt-(block_cnt[0]-(Math.Pow(b_cnt,2)+b_cnt+1)));
-				
+
 				block_cnt[0]++;
 			}
-			
+
 			/* 9 */
-			
+
 			else if(block_cnt[0]==Math.Pow(b_cnt+1,2)){
-				
+
 				b_x_list_temp=b_x_list.FindAll(e => e.building_step_cnt == b_cnt);
 				b_z_list_temp=b_z_list.FindAll(f => f.building_step_cnt == 0);
-				
+
 				/* building position */
 				block_pos.x_pos=b_x_list_temp[0].x;
 				block_pos.z_pos=b_z_list_temp[0].z;
-				
+
 				b_x_list_temp.RemoveAll(e => e.building_step_cnt == b_cnt);
 				b_z_list_temp.RemoveAll(f => f.building_step_cnt == 0);
-				
+
 				/* building cnt n -> n+1 */
 				block_cnt[0]++;
 				/* building step cnt m -> m+1 */
 				b_cnt++;
 			}
-			
+
 			else{
 				Debug.Log("aho");
 			}
-			
+
 			sorted_block_list[cnt].x_pos=block_pos.x_pos;
 			sorted_block_list[cnt].z_pos=block_pos.z_pos;
 
@@ -421,7 +420,7 @@ public class CityCreater : MonoBehaviour
 
 		Debug.Log(sorted_block_list[0].block_ID);
 		Debug.Log(sorted_block_list[0].x_pos);
-		
+
 		cnt = 0;
 
 		foreach (sort_block block_pos in sorted_block_list) {
@@ -438,7 +437,7 @@ public class CityCreater : MonoBehaviour
 		Debug.Log ("---");
 
 		foreach (sort_building building_pos in sorted_building_list) {
-			
+
 		//	se_x=(e_point_x[building_pos.block_ID]-s_point_x[building_pos.block_ID])/2;
 		//	se_z=(e_point_z[building_pos.block_ID]-s_point_z[building_pos.block_ID])/2;
 
@@ -453,9 +452,9 @@ public class CityCreater : MonoBehaviour
 			clone.transform.localScale = new Vector3 (building_pos.width, building_pos.height, building_pos.width);
 			//clone.GetComponent<Renderer>().material.color = Color.blue;
 			clone.GetComponent<Renderer>().material.color = new Color(building_pos.color_r,building_pos.color_g,building_pos.color_b);
-			 
+
 			sorted_block_list_temp.RemoveAll(d => d.block_ID == building_pos.block_ID);
-			
+
 			x_list_temp.RemoveAll(e => e.block_ID == building_pos.block_ID && e.building_step_cnt == 0);
 			z_list_temp.RemoveAll(f => f.block_ID == building_pos.block_ID && f.building_step_cnt == 0);
 
@@ -495,7 +494,7 @@ public class CityCreater : MonoBehaviour
 
 				float x = 0;
 				float z = 0;
-				
+
 				float se_x = 0;
 				float se_z = 0;
 
@@ -518,10 +517,10 @@ public class CityCreater : MonoBehaviour
 					sorted_block_list.Add (new sort_block(){block_ID=cnt,block_name=block["name"].ToString (),x_width=zero,z_width=zero,x_pos=zero,y_pos=zero,z_pos=zero});
 					cnt++;
 				}
-				
+
 				/* sec.2 */
-				
-				foreach (Dictionary<string,object> building in buildings) {	
+
+				foreach (Dictionary<string,object> building in buildings) {
 					float width = float.Parse (building ["width"].ToString ());
 					float height = float.Parse (building ["height"].ToString ());
 					string block_name = building ["block"].ToString ();
@@ -529,7 +528,7 @@ public class CityCreater : MonoBehaviour
 
 					sorted_building_list.Add (new sort_building(){block_ID=block_ID_Dic[block_name],building_name=building_name,width=width,height=height,x_pos=width/two,y_pos=two,z_pos=width/two});
 				}
-				
+
 				sorted_building_list.Sort ((b,a) => (int)a.width - (int)b.width);
 
 				cnt = 0;
@@ -563,12 +562,12 @@ public class CityCreater : MonoBehaviour
 
 						z_cnt[building_pos.block_ID]=building_pos.z_pos;
 					}
-					
+
 					else if(building_cnt[building_pos.block_ID]==3){
 						building_pos.x_pos=sorted_block_list[building_pos.block_ID].x_width+(building_pos.width+10)/2;
 						building_pos.z_pos=z_cnt[building_pos.block_ID];
 						sorted_block_list[building_pos.block_ID].x_width += building_pos.width+10;
-						
+
 						e_point_x[building_pos.block_ID]=building_pos.x_pos;
 						e_point_z[building_pos.block_ID]=building_pos.z_pos;
 
@@ -609,7 +608,7 @@ public class CityCreater : MonoBehaviour
 
 						block_cnt[block_pos.block_ID]++;
 					}
-					
+
 					else if((block_pos.block_ID)+1==2){
 						block_pos.x_pos=block_pos.x_width/2;
 						block_pos.z_pos=block_pos.z_width/2+50+z;
@@ -622,7 +621,7 @@ public class CityCreater : MonoBehaviour
 
 						block_cnt[block_pos.block_ID]++;
 					}
-					
+
 					else if((block_pos.block_ID)+1==3){
 						block_pos.x_pos=block_pos.x_width/2;
 						block_pos.z_pos=block_pos.z_width/2+50+z;
@@ -635,20 +634,20 @@ public class CityCreater : MonoBehaviour
 
 						block_cnt[block_pos.block_ID]++;
 					}
-					
+
 					else if((block_pos.block_ID)+1==4){
 						block_pos.x_pos=block_pos.x_width/2;
 						block_pos.z_pos=block_pos.z_width/2+50+z;
 
 						sorted_block_list[cnt].x_pos=block_pos.x_width/2;
 						sorted_block_list[cnt].z_pos=block_pos.z_width/2+50+z;
-						
+
 						x=block_pos.x_pos;
 						z=block_pos.z_width+50+z;
 
 						block_cnt[block_pos.block_ID]++;
 					}
-					
+
 					else{
 						Debug.Log(building_cnt[block_pos.block_ID]);
 					}
@@ -673,16 +672,16 @@ public class CityCreater : MonoBehaviour
 				}
 
 				/* sec.3 */
-/*				
+/*
 				foreach (Dictionary<string,object> block in blocks) {
 					y +=  maxW[block ["name"].ToString ()]/2 ;
 					maxX.Add (block ["name"].ToString (), 0);
 					maxY.Add (block ["name"].ToString (), y);
 					y +=  maxW[block ["name"].ToString ()]/2+ 20;
 				}
-*/				
+*/
 				/* sec.4 */
-/*				
+/*
 				foreach (Dictionary<string,object> building in buildings) {
 					var block = building ["block"].ToString ();
 					var width = float.Parse (building ["width"].ToString ());
@@ -695,15 +694,15 @@ public class CityCreater : MonoBehaviour
 					maxX [block] += width + 20;
 					maxW [block] = System.Math.Max (width, maxW [block]);
 				}
-*/				
+*/
 				/* sec.5 */
-/*		
+/*
 				foreach (Dictionary<string,object> block in blocks) {
 					var name = block ["name"].ToString ();
 					GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Cube);
 					cube.transform.localScale = new Vector3 (maxX [name] +10, 2, maxW [name] + 10);
 					cube.transform.position = new Vector3 (maxX [name] / 2, 1, maxY [name]);
-				}		
+				}
 */
 	}
 
@@ -725,12 +724,12 @@ public class CityCreater : MonoBehaviour
 
 		/* sec.2 */
 
-				foreach (Dictionary<string,object> building in buildings) {	
+				foreach (Dictionary<string,object> building in buildings) {
 						var width = float.Parse (building ["width"].ToString ());
 						var name = building ["block"].ToString ();
 						Debug.Log(name);
 						maxW[name] = System.Math.Max (width, maxW [name]);
-						
+
 				}
 
 		/* sec.3 */
@@ -741,7 +740,7 @@ public class CityCreater : MonoBehaviour
 						maxY.Add (block ["name"].ToString (), y);
 						y +=  maxW[block ["name"].ToString ()]/2+ 20;
 				}
-				
+
 		/* sec.4 */
 
 		foreach (Dictionary<string,object> building in buildings) {
@@ -749,11 +748,11 @@ public class CityCreater : MonoBehaviour
 			var width = float.Parse (building ["width"].ToString ());
 			var height = float.Parse (building ["height"].ToString ());
 			var name = building ["name"].ToString ();
-			
+
 			GameObject clone = Instantiate(this.building,new Vector3 (maxX [block]+ width/2, height / 2, maxY [block]),transform.rotation) as GameObject;
 			clone.name = name;
 			clone.transform.localScale = new Vector3 (width, height, width);
-			
+
 			maxX [block] += width + 20;
 			maxW [block] = System.Math.Max (width, maxW [block]);
 		}
@@ -780,9 +779,14 @@ public class CityCreater : MonoBehaviour
 				}
 		}
 
-		IEnumerator ReadFile ()
+		public void StartCityCreater(string id)
 		{
-			string url = "http://kataribe-dev.naist.jp:8484/public/codecity.json";
+			StartCoroutine(ReadFile(id));
+		}
+
+		IEnumerator ReadFile (string id)
+		{
+			string url = "http://kataribe-dev.naist.jp:8484/public/code_city.json?id=" + id;
 			WWW www = new WWW(url);
 			yield return www;
 
@@ -799,14 +803,14 @@ public class CityCreater : MonoBehaviour
 		{
 				return "cant read\n";
 		}
-	 
+
 		public Dictionary<string,object> GetCity(){
 			return this.city;
 		}
-	
+
 		// Update is called once per frame
 		void Update ()
 		{
-	
+
 		}
 }
