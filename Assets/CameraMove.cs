@@ -18,6 +18,9 @@ public class CameraMove : MonoBehaviour {
 	public Color preColor;
 	public Material viewMaterial;
 	private bool view_src;
+
+	private Building selectedBuilding;
+
 	// Use this for initialization
 	void Start () {
 		view_src = true;
@@ -26,8 +29,6 @@ public class CameraMove : MonoBehaviour {
 			file_name = child.gameObject.GetComponent<Text>();
 //			file_name = GameObject.Find("Text");
 			file_name.text = "";
-			//viewMaterial = new Material();
-			//viewMaterial.color = Color.red;
 		}
 
 	}
@@ -64,25 +65,29 @@ public class CameraMove : MonoBehaviour {
 		Vector3 fwd = transform.TransformDirection(Vector3.forward);
 		RaycastHit hit;
 		if (Physics.Raycast (transform.position, fwd, out hit, 10000)) {
-			if (hit.transform.name != file_name.text){
-				var prev = GameObject.Find (file_name.text);
-				var next = GameObject.Find (hit.transform.name);
-				var path = SearchPathFromFileName(hit.transform.name);
-				src_txt = ReadFile(path);
-				file_name.text = hit.transform.name;
-				if (prev)
-					prev.GetComponent<Renderer>().material.color = preColor;
-					//prev.GetComponent<Renderer>().material.color = Color.white;
-				preColor = next.GetComponent<Renderer>().material.color;
-				next.GetComponent<Renderer>().material.color = Color.red;
-				//next.GetComponent<Renderer>().material = viewMaterial;
+			Building hitBuilding = hit.transform.GetComponent<Building>();
+			if (hitBuilding != null)
+			{
+				if (selectedBuilding == null || selectedBuilding != hitBuilding){
+					var path = SearchPathFromFileName(hit.transform.name);
+					src_txt = ReadFile(path);
 
+					file_name.text = hitBuilding.transform.name;
+
+					if (selectedBuilding)
+					{
+						selectedBuilding.Deselected();
+					}
+
+					selectedBuilding = hitBuilding;
+					selectedBuilding.Selected();
+				}
 			}
  		} else {
-			var prev = GameObject.Find (file_name.text);
-			if (prev)
-				prev.GetComponent<Renderer>().material.color = preColor;
-				//prev.GetComponent<Renderer>().material.color = Color.white;
+			if (selectedBuilding)
+			{
+				selectedBuilding.Deselected();
+			}
 			file_name.text = "";
 		}
 

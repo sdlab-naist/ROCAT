@@ -451,7 +451,7 @@ public class CityCreater : MonoBehaviour
 			clone.name = building_pos.building_name;
 			clone.transform.localScale = new Vector3 (building_pos.width, building_pos.height, building_pos.width);
 			//clone.GetComponent<Renderer>().material.color = Color.blue;
-			clone.GetComponent<Renderer>().material.color = new Color(building_pos.color_r,building_pos.color_g,building_pos.color_b);
+			clone.GetComponent<Building>().Init(new Color(building_pos.color_r,building_pos.color_g,building_pos.color_b));
 
 			sorted_block_list_temp.RemoveAll(d => d.block_ID == building_pos.block_ID);
 
