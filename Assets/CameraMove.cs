@@ -2,11 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using System.IO; //System.IO.FileInfo, System.IO.StreamReader, System.IO.StreamWriter
-using System; //Exception
+using System.IO;
+using System;
 using System.Text;
 using MiniJSON;
-//using CityCreater;
 
 public class CameraMove : MonoBehaviour {
 	const float SPEED = 0.1f;
@@ -27,7 +26,6 @@ public class CameraMove : MonoBehaviour {
 		cc = GameObject.Find ("CityCreater").GetComponent<CityCreater> ();
 		foreach( Transform child in canvas.transform){
 			file_name = child.gameObject.GetComponent<Text>();
-//			file_name = GameObject.Find("Text");
 			file_name.text = "";
 		}
 
@@ -90,31 +88,8 @@ public class CameraMove : MonoBehaviour {
 			}
 			file_name.text = "";
 		}
-
-
-//		this.transform.Translate ( 0, 0,( Input.GetAxis ( "Vertical" ) * 1 ) );
-//		this.transform.Rotate (0,( Input.GetAxis ("Horizontal" )  * 1 ),0);
 	}
-	// void OnGUI()
-	// {
-	// 	if(view_src)
-	// 		//src_txt = GUI.TextArea (new Rect (5, 5, Screen.width-10, Screen.height-100), src_txt);
-	// 		src_txt = GUI.TextArea (new Rect (5, 5, Screen.width-10, Screen.height-100), src_txt.Substring(0,Math.Min(1000,src_txt.Length)));
 
-	// }
-	/*
-	void OnGUI () {
-		// ラベルを表示する
-		GUI.Label(new Rect(10,10,100,100), “MenuWindow”);
-	}
-	*/
-
-	void OnCollisionEnter(Collision collision){
-		 //file_name.text = collision.transform.name;
-	}
-	void OnCollisionExit(Collision collision){
-		//file_name.text = "";
-	}
 	string ReadFile(string path){
 		string st = "";
 		return st;
