@@ -136,9 +136,9 @@ public class CameraMove : MonoBehaviour {
 
 	private Building GetRaycastHitBuilding()
 	{
-		Vector3 fwd = transform.TransformDirection(Vector3.forward);
 		RaycastHit hit;
-		if (Physics.Raycast (transform.position, fwd, out hit, 10000)) {
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		if (Physics.Raycast(ray, out hit, 10000)) {
 			Building hitBuilding = hit.transform.GetComponent<Building>();
 			return hitBuilding;
  		}
