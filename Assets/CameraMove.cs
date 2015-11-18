@@ -129,6 +129,7 @@ public class CameraMove : MonoBehaviour {
 			if (selectedBuilding)
 			{
 				selectedBuilding.Deselected();
+				selectedBuilding = null;
 			}
 			file_name.text = "";
 		}
