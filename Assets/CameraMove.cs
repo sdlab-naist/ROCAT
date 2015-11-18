@@ -41,9 +41,9 @@ public class CameraMove : MonoBehaviour {
 	{
 		view_src = true;
 		cc = GameObject.Find ("CityCreater").GetComponent<CityCreater> ();
-		foreach( Transform child in canvas.transform){
-			file_name = child.gameObject.GetComponent<Text>();
-			file_name.text = "";
+		foreach(Text text in canvas.transform.GetComponentsInChildren<Text>())
+		{
+			text.text = "";
 		}
 
 	}
