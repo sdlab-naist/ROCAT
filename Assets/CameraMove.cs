@@ -58,24 +58,27 @@ public class CameraMove : MonoBehaviour {
 	private void ControlByKeyboard()
 	{
 		Rigidbody rigidBody = gameObject.GetComponent<Rigidbody>();
+		Vector3 velocity = Vector3.zero;
 
-		if(Input.GetKey(KeyCode.UpArrow))
+		if(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
 		{
-			rigidBody.velocity = transform.forward * CAMERA_SPEED;
+			velocity += transform.forward * CAMERA_SPEED;
 		}
-		if(Input.GetKey(KeyCode.DownArrow))
+		if(Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
 		{
-			rigidBody.velocity = transform.forward * CAMERA_SPEED * -1;
+			velocity += transform.forward * CAMERA_SPEED * -1;
 		}
 
-		if(Input.GetKey(KeyCode.LeftArrow))
+		if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
 		{
-			rigidBody.velocity = transform.right *  CAMERA_SPEED * -1;
+			velocity += transform.right *  CAMERA_SPEED * -1;
 		}
-		if(Input.GetKey(KeyCode.RightArrow))
+		if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
 		{
-			rigidBody.velocity = transform.right * CAMERA_SPEED;
+			velocity += transform.right * CAMERA_SPEED;
 		}
+
+		rigidBody.velocity = velocity;
 
 		if (Input.GetKey(KeyCode.Space))
 		{
