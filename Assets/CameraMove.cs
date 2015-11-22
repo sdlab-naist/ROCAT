@@ -105,7 +105,12 @@ public class CameraMove : MonoBehaviour {
 	private void MouseClicked(Building building)
 	{
 		if (building == null) {return;}
-		Debug.Log("click : " + building.name);
+		string path = SearchPathFromFileName(building.transform.name);
+#if UNITY_EDITOR
+			Debug.Log(path);
+#else
+			Application.ExternalCall("OnBuildingClick", path);
+#endif
 	}
 
 	private void HighlighMouseOverBuilding(Building building)
