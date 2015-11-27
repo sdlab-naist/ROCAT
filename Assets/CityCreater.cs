@@ -428,6 +428,7 @@ public class CityCreater : MonoBehaviour
 			GameObject clone = Instantiate(this.building,new Vector3 (block_pos.x_pos, 1, block_pos.z_pos),transform.rotation) as GameObject;
 			clone.name = block_pos.block_name;
 			clone.transform.localScale = new Vector3 (block_pos.x_width, 2, block_pos.z_width);
+			clone.GetComponent<Building>().Init(Color.white);
 		}
 
 		cnt = 0;
