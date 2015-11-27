@@ -697,7 +697,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1923740353}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 459, z: -10}
+  m_LocalPosition: {x: -500, y: 260, z: -200}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -719,6 +719,7 @@ MonoBehaviour:
   ta: 
   preColor: {r: 0, g: 0, b: 0, a: 0}
   viewMaterial: {fileID: 0}
+  isControlAvailable: 0
 --- !u!143 &1923740360
 CharacterController:
   m_ObjectHideFlags: 0
