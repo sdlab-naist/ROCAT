@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 public class Building : MonoBehaviour
 {
-	private Color color;
+	private Color originalColor;
 
 	public void Init(Color color)
 	{
-		this.color = color;
+		this.originalColor = color;
 
-		SetMaterial(this.color);
+		SetMaterial(originalColor);
 	}
 
 	public void Selected()
@@ -20,20 +20,24 @@ public class Building : MonoBehaviour
 
 	public void Deselected()
 	{
-		SetMaterial(color);
+		SetMaterial(originalColor);
 	}
 
 	public void SetMaterial(Color color)
 	{
+		Material material = null;
 		if (Building.HasMaterial(color))
 		{
-			GetComponent<Renderer>().sharedMaterial = Building.GetMaterial(color);
+			material = Building.GetMaterial(color);
 		}
 		else
 		{
-			GetComponent<Renderer>().material.color = color;
-			Building.AddMaterial(color, GetComponent<Renderer>().material);
+			material = new Material(GetComponent<Renderer>().material);
+			material.color = color;
+			Building.AddMaterial(color, material);
 		}
+
+		GetComponent<Renderer>().sharedMaterial = material;
 	}
 
 #region Static
