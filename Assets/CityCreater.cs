@@ -797,6 +797,7 @@ public class CityCreater : MonoBehaviour
 			}
 
 			CreateCity();
+			Camera.main.GetComponent<CameraMove>().isControlAvailable = true;
 		}
 
 		string SetDefaultText ()

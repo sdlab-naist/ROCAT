@@ -18,6 +18,8 @@ public class CameraMove : MonoBehaviour {
 	public Material viewMaterial;
 	private bool view_src;
 
+	public bool isControlAvailable = false;
+	private bool isMouseAvailable = true;
 	private Building selectedBuilding;
 
 	private float rotationY = 0f;
@@ -51,6 +53,7 @@ public class CameraMove : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
+		if (!isControlAvailable) {return;}
 		ControlByKeyboard();
 		ControlByMouse();
 	}
@@ -84,10 +87,17 @@ public class CameraMove : MonoBehaviour {
 		{
 			rigidBody.velocity = transform.up * CAMERA_SPEED * (Input.GetKey(KeyCode.LeftShift) ? -1 : 1);
 		}
+
+		if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Escape))
+		{
+			isMouseAvailable = !isMouseAvailable;
+		}
 	}
 
 	private void ControlByMouse()
 	{
+		if (!isMouseAvailable) {return;}
+
 		float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * CAMERA_CONTROL_SENSITIVITY;
 		rotationY += Input.GetAxis("Mouse Y") * CAMERA_CONTROL_SENSITIVITY;
 		rotationY = Mathf.Clamp(rotationY, MIN_ROTATION_Y, MAX_ROTATION_Y);
