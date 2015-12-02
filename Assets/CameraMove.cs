@@ -19,7 +19,14 @@ public class CameraMove : MonoBehaviour {
 	public Material viewMaterial;
 	private bool view_src;
 
+	private bool isMouseAvailable = true;
 	private Building selectedBuilding;
+
+	private float rotationY = 0f;
+	private const float CAMERA_SPEED = 200f;
+	private const float CAMERA_CONTROL_SENSITIVITY = 3F;
+	private const float MIN_ROTATION_Y = -30F;
+	private const float MAX_ROTATION_Y = 30F;
 
 	// Use this for initialization
 	void Start () {
@@ -32,61 +39,114 @@ public class CameraMove : MonoBehaviour {
 
 	}
 
-	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
+		ControlByKeyboard();
+		ControlByMouse();
+	}
 
-		if(Input.GetKey(KeyCode.UpArrow)){
-			GetComponent<Rigidbody>().velocity = transform.forward * 100.0f;
-		}
-		if(Input.GetKey(KeyCode.LeftArrow)){
-			transform.Rotate(new Vector3(0,-0.8f,0));
-		}
-		if(Input.GetKey(KeyCode.DownArrow)){
-			GetComponent<Rigidbody>().velocity = transform.forward * -100.0f;
-		}
-		if(Input.GetKey(KeyCode.RightArrow)){
-			transform.Rotate(new Vector3(0,0.8f,0));
-		}
-		if (Input.GetKey (KeyCode.Space) && Input.GetKey (KeyCode.LeftShift)) {
-			GetComponent<Rigidbody> ().velocity = transform.up * -100.0f;
-		}
-		else if (Input.GetKey (KeyCode.Space)) {
-			GetComponent<Rigidbody>().velocity = transform.up * 100.0f;
-		}
-		if (Input.GetKey (KeyCode.V)) {
-			view_src = true;
-		}
-		if (Input.GetKey (KeyCode.H)) {
-			view_src = false;
-		}
-		Vector3 fwd = transform.TransformDirection(Vector3.forward);
-		RaycastHit hit;
-		if (Physics.Raycast (transform.position, fwd, out hit, 10000)) {
-			Building hitBuilding = hit.transform.GetComponent<Building>();
-			if (hitBuilding != null)
-			{
-				if (selectedBuilding == null || selectedBuilding != hitBuilding){
-					var path = SearchPathFromFileName(hit.transform.name);
-					src_txt = ReadFile(path);
+	private void ControlByKeyboard()
+	{
+		Rigidbody rigidBody = gameObject.GetComponent<Rigidbody>();
+		Vector3 velocity = Vector3.zero;
 
-					file_name.text = hitBuilding.transform.name;
+		if(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
+		{
+			velocity += transform.forward * CAMERA_SPEED;
+		}
+		if(Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
+		{
+			velocity += transform.forward * CAMERA_SPEED * -1;
+		}
 
-					if (selectedBuilding)
-					{
-						selectedBuilding.Deselected();
-					}
+		if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+		{
+			velocity += transform.right *  CAMERA_SPEED * -1;
+		}
+		if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+		{
+			velocity += transform.right * CAMERA_SPEED;
+		}
 
-					selectedBuilding = hitBuilding;
-					selectedBuilding.Selected();
+		rigidBody.velocity = velocity;
+
+		if (Input.GetKey(KeyCode.Space))
+		{
+			rigidBody.velocity = transform.up * CAMERA_SPEED * (Input.GetKey(KeyCode.LeftShift) ? -1 : 1);
+		}
+
+		if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Escape))
+		{
+			isMouseAvailable = !isMouseAvailable;
+		}
+		if (Input.GetKeyDown(KeyCode.V))
+		{
+			view_src = !view_src;
+		}
+	}
+
+	private void ControlByMouse()
+	{
+		Building building = GetRaycastHitBuilding();
+		HighlighMouseOverBuilding(building);
+
+		if (Input.GetMouseButtonDown(0))
+		{
+			MouseClicked(building);
+		}
+
+		if (!isMouseAvailable) {return;}
+
+		float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * CAMERA_CONTROL_SENSITIVITY;
+		rotationY += Input.GetAxis("Mouse Y") * CAMERA_CONTROL_SENSITIVITY;
+		rotationY = Mathf.Clamp(rotationY, MIN_ROTATION_Y, MAX_ROTATION_Y);
+		transform.localEulerAngles = new Vector3(rotationY * -1, rotationX, 0);
+	}
+
+	private void MouseClicked(Building building)
+	{
+		if (building == null) {return;}
+		string path = SearchPathFromFileName(building.transform.name);
+		src_txt = ReadFile(path);
+	}
+
+	private void HighlighMouseOverBuilding(Building building)
+	{
+		if (building != null)
+		{
+			if (selectedBuilding == null || selectedBuilding != building){
+				file_name.text = building.transform.name;
+
+				if (selectedBuilding)
+				{
+					selectedBuilding.Deselected();
 				}
+
+				selectedBuilding = building;
+				selectedBuilding.Selected();
 			}
- 		} else {
+		}
+		else
+		{
 			if (selectedBuilding)
 			{
 				selectedBuilding.Deselected();
+				selectedBuilding = null;
 			}
 			file_name.text = "";
 		}
+	}
+
+	private Building GetRaycastHitBuilding()
+	{
+		RaycastHit hit;
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		if (Physics.Raycast(ray, out hit, 10000)) {
+			Building hitBuilding = hit.transform.GetComponent<Building>();
+			return hitBuilding;
+		}
+
+		return null;
 	}
 
 	void OnGUI()
