@@ -96,13 +96,6 @@ public class CameraMove : MonoBehaviour {
 
 	private void ControlByMouse()
 	{
-		if (!isMouseAvailable) {return;}
-
-		float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * CAMERA_CONTROL_SENSITIVITY;
-		rotationY += Input.GetAxis("Mouse Y") * CAMERA_CONTROL_SENSITIVITY;
-		rotationY = Mathf.Clamp(rotationY, MIN_ROTATION_Y, MAX_ROTATION_Y);
-		transform.localEulerAngles = new Vector3(rotationY * -1, rotationX, 0);
-
 		Building building = GetRaycastHitBuilding();
 		HighlighMouseOverBuilding(building);
 
@@ -110,6 +103,13 @@ public class CameraMove : MonoBehaviour {
 		{
 			MouseClicked(building);
 		}
+
+		if (!isMouseAvailable) {return;}
+
+		float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * CAMERA_CONTROL_SENSITIVITY;
+		rotationY += Input.GetAxis("Mouse Y") * CAMERA_CONTROL_SENSITIVITY;
+		rotationY = Mathf.Clamp(rotationY, MIN_ROTATION_Y, MAX_ROTATION_Y);
+		transform.localEulerAngles = new Vector3(rotationY * -1, rotationX, 0);
 	}
 
 	private void MouseClicked(Building building)
